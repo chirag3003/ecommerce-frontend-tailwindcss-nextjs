@@ -13,10 +13,7 @@ export default function Orders() {
             </Head>
 
             <BasicLayout>
-                <main>
-                    <OrderPage />
-                </main>
-
+                <OrderPage />
             </BasicLayout>
 
 

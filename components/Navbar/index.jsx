@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingCartIcon, UserIcon, XIcon } from '@heroicons/react/outline'
 import { LOGO } from 'config/url'
+import Link from 'next/link'
 
 const navigation = {
     categories: [
@@ -203,14 +204,15 @@ export default function Navbar() {
                                 <div className="h-16 flex items-center justify-between">
                                     {/* Logo (lg+) */}
                                     <div className="hidden lg:flex lg:items-center">
-                                        <a href="#">
-                                            <span className="sr-only">Workflow</span>
+
+                                        <span className="sr-only">Workflow</span>
+                                        <Link href="/">
                                             <img
                                                 className="h-8 w-auto"
                                                 src={LOGO}
                                                 alt=""
                                             />
-                                        </a>
+                                        </Link>
                                     </div>
 
                                     <div className="hidden h-full lg:flex">

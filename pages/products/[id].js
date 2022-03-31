@@ -13,10 +13,7 @@ export default function Home() {
             </Head>
 
             <BasicLayout>
-                <main>
-                    <ProductPage />
-                </main>
-
+                <ProductPage />
             </BasicLayout>
 
 
