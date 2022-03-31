@@ -1,5 +1,5 @@
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid'
-import ProductCard2 from 'components/ProductCart2'
+import ProductCard2 from 'components/ProductCard2'
 import CartProductCart from './CartProductCard'
 
 const products = [
