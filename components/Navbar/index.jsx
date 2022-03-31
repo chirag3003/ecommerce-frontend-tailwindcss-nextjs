@@ -206,7 +206,7 @@ export default function Navbar() {
                                     <div className="hidden lg:flex lg:items-center">
 
                                         <span className="sr-only">Workflow</span>
-                                        <Link href="/">
+                                        <Link href="/" passHref >
                                             <img
                                                 className="h-8 w-auto"
                                                 src={LOGO}
@@ -374,14 +374,16 @@ export default function Navbar() {
                                     </div>
 
                                     {/* Logo (lg-) */}
-                                    <a href="#" className="lg:hidden">
-                                        <span className="sr-only">Workflow</span>
-                                        <img
-                                            src={LOGO}
-                                            alt=""
-                                            className="h-8 w-auto"
-                                        />
-                                    </a>
+                                    <Link href="/" passHref className="lg:hidden">
+                                        <div className="lg:hidden">
+                                            <span className="sr-only">Workflow</span>
+                                            <img
+                                                src={LOGO}
+                                                alt=""
+                                                className="h-8 w-auto"
+                                            />
+                                        </div>
+                                    </Link>
 
                                     <div className="flex-1 flex items-center justify-end">
                                         <div className="flex items-center lg:ml-8">
