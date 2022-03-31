@@ -21,19 +21,19 @@ export default function Example() {
         <main className="bg-white px-4 pt-16 pb-24 sm:px-6 sm:pt-24 lg:px-8 lg:py-32">
 
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Order Details</h1>
+                <h1 className="text-3xl font-extrabold tracking-tight text-indigo-600">Order Details</h1>
 
                 <div className="text-sm border-b border-gray-200 mt-2 pb-5 sm:flex sm:justify-between">
                     <dl className="flex">
                         <dt className="text-gray-500">Order number&nbsp;</dt>
-                        <dd className="font-medium text-gray-900">W086438695</dd>
+                        <dd className="font-medium text-indigo-600">W086438695</dd>
                         <dt>
                             <span className="sr-only">Date</span>
                             <span className="text-gray-400 mx-2" aria-hidden="true">
                                 &middot;
                             </span>
                         </dt>
-                        <dd className="font-medium text-gray-900">
+                        <dd className="font-medium text-indigo-600">
                             <time dateTime="2021-03-22">March 22, 2021</time>
                         </dd>
                     </dl>
@@ -45,8 +45,8 @@ export default function Example() {
                 </div>
                 <div className="border-t border-gray-200 py-6 px-4 sm:px-6 lg:p-8">
                     <h4 className="sr-only">Status</h4>
-                    <p className="text-sm font-medium text-gray-900">
-                        status on <time dateTime={"2021-03-24"}>March 24, 2021</time>
+                    <p className="text-sm font-medium text-indigo-600">
+                        {"status"} on <time dateTime={"2021-03-24"}>March 24, 2021</time>
                     </p>
                     <div className="mt-6" aria-hidden="true">
                         <div className="bg-gray-200 rounded-full overflow-hidden">
@@ -85,7 +85,7 @@ export default function Example() {
                             />
                             <div className="flex-auto flex flex-col">
                                 <div>
-                                    <h4 className="font-medium text-gray-900">
+                                    <h4 className="font-medium text-indigo-600">
                                         <a href={product.href}>{product.name}</a>
                                     </h4>
                                     <p className="mt-2 text-sm text-gray-600">{product.description}</p>
@@ -93,11 +93,11 @@ export default function Example() {
                                 <div className="mt-6 flex-1 flex items-end">
                                     <dl className="flex text-sm divide-x divide-gray-200 space-x-4 sm:space-x-6">
                                         <div className="flex">
-                                            <dt className="font-medium text-gray-900">Quantity</dt>
+                                            <dt className="font-medium text-indigo-600">Quantity</dt>
                                             <dd className="ml-2 text-gray-700">{product.quantity}</dd>
                                         </div>
                                         <div className="pl-4 flex sm:pl-6">
-                                            <dt className="font-medium text-gray-900">Price</dt>
+                                            <dt className="font-medium text-indigo-600">Price</dt>
                                             <dd className="ml-2 text-gray-700">{product.price}</dd>
                                         </div>
                                     </dl>
@@ -112,7 +112,7 @@ export default function Example() {
                         <h4 className="sr-only">Addresses</h4>
                         <dl className="grid grid-cols-2 gap-x-6 text-sm py-10">
                             <div>
-                                <dt className="font-medium text-gray-900">Shipping address</dt>
+                                <dt className="font-medium text-indigo-600">Shipping address</dt>
                                 <dd className="mt-2 text-gray-700">
                                     <address className="not-italic">
                                         <span className="block">Kristin Watson</span>
@@ -122,7 +122,7 @@ export default function Example() {
                                 </dd>
                             </div>
                             <div>
-                                <dt className="font-medium text-gray-900">Billing address</dt>
+                                <dt className="font-medium text-indigo-600">Billing address</dt>
                                 <dd className="mt-2 text-gray-700">
                                     <address className="not-italic">
                                         <span className="block">Kristin Watson</span>
@@ -136,7 +136,7 @@ export default function Example() {
                         <h4 className="sr-only">Payment</h4>
                         <dl className="grid grid-cols-2 gap-x-6 border-t border-gray-200 text-sm py-10">
                             <div>
-                                <dt className="font-medium text-gray-900">Payment method</dt>
+                                <dt className="font-medium text-indigo-600">Payment method</dt>
                                 <dd className="mt-2 text-gray-700">
                                     <p>Apple Pay</p>
                                     <p>Mastercard</p>
@@ -147,7 +147,7 @@ export default function Example() {
                                 </dd>
                             </div>
                             <div>
-                                <dt className="font-medium text-gray-900">Shipping method</dt>
+                                <dt className="font-medium text-indigo-600">Shipping method</dt>
                                 <dd className="mt-2 text-gray-700">
                                     <p>DHL</p>
                                     <p>Takes up to 3 working days</p>
@@ -159,23 +159,23 @@ export default function Example() {
 
                         <dl className="space-y-6 border-t border-gray-200 text-sm pt-10">
                             <div className="flex justify-between">
-                                <dt className="font-medium text-gray-900">Subtotal</dt>
+                                <dt className="font-medium text-indigo-600">Subtotal</dt>
                                 <dd className="text-gray-700">$36.00</dd>
                             </div>
                             <div className="flex justify-between">
-                                <dt className="flex font-medium text-gray-900">
+                                <dt className="flex font-medium text-indigo-600">
                                     Discount
                                     <span className="rounded-full bg-gray-200 text-xs text-gray-600 py-0.5 px-2 ml-2">FIRSTTIME</span>
                                 </dt>
                                 <dd className="text-gray-700">-₹18.00 (50%)</dd>
                             </div>
                             <div className="flex justify-between">
-                                <dt className="font-medium text-gray-900">Shipping</dt>
+                                <dt className="font-medium text-indigo-600">Shipping</dt>
                                 <dd className="text-gray-700">₹5.00</dd>
                             </div>
                             <div className="flex justify-between">
-                                <dt className="font-medium text-gray-900">Total</dt>
-                                <dd className="text-gray-900">₹23.00</dd>
+                                <dt className="font-medium text-indigo-600">Total</dt>
+                                <dd className="text-indigo-600">₹23.00</dd>
                             </div>
                         </dl>
                     </div>
