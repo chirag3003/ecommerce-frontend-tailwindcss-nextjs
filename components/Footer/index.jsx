@@ -1,6 +1,4 @@
 
-import { ChevronDownIcon } from '@heroicons/react/solid'
-
 const navigation = {
     solutions: [
         { name: 'Marketing', href: '#' },
@@ -142,7 +140,7 @@ export default function Footer() {
                         ))}
                     </div>
                     <p className="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
-                        &copy; 2020 Workflow, Inc. All rights reserved.
+                        &copy; 2022 Chirag Bhalotia. All rights reserved.
                     </p>
                 </div>
             </div>
