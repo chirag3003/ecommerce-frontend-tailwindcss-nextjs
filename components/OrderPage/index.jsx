@@ -1,4 +1,5 @@
-/* This example requires Tailwind CSS v2.0+ */
+import OrderProductCard from "./OrderProductCard"
+import StatusBar from "./StatusBar"
 const products = [
     {
         id: 1,
@@ -13,9 +14,7 @@ const products = [
         step: 2
     },
 ]
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
+
 export default function Example() {
     return (
         <main className="bg-white px-4 pt-16 pb-24 sm:px-6 sm:pt-24 lg:px-8 lg:py-32">
@@ -48,26 +47,7 @@ export default function Example() {
                     <p className="text-sm font-medium text-indigo-600">
                         {"status"} on <time dateTime={"2021-03-24"}>March 24, 2021</time>
                     </p>
-                    <div className="mt-6" aria-hidden="true">
-                        <div className="bg-gray-200 rounded-full overflow-hidden">
-                            <div
-                                className="h-2 bg-indigo-600 rounded-full"
-                                style={{ width: `calc((${products[0].step} * 2 + 1) / 8 * 100%)` }}
-                            />
-                        </div>
-                        <div className="hidden sm:grid grid-cols-4 text-sm font-medium text-gray-600 mt-6">
-                            <div className="text-indigo-600">Order placed</div>
-                            <div className={classNames(products[0].step > 0 ? 'text-indigo-600' : '', 'text-center')}>
-                                Processing
-                            </div>
-                            <div className={classNames(products[0].step > 1 ? 'text-indigo-600' : '', 'text-center')}>
-                                Shipped
-                            </div>
-                            <div className={classNames(products[0].step > 2 ? 'text-indigo-600' : '', 'text-right')}>
-                                Delivered
-                            </div>
-                        </div>
-                    </div>
+                    <StatusBar step={products[0].step} />
                 </div>
 
                 <section aria-labelledby="order-heading" className="mt-10 border-t border-gray-200">
@@ -77,33 +57,7 @@ export default function Example() {
 
                     <h3 className="sr-only">Items</h3>
                     {products.map((product) => (
-                        <div key={product.id} className="py-10 border-b border-gray-200 flex space-x-6">
-                            <img
-                                src={product.imageSrc}
-                                alt={product.imageAlt}
-                                className="flex-none w-20 h-20 object-center object-cover bg-gray-100 rounded-lg sm:w-40 sm:h-40"
-                            />
-                            <div className="flex-auto flex flex-col">
-                                <div>
-                                    <h4 className="font-medium text-indigo-600">
-                                        <a href={product.href}>{product.name}</a>
-                                    </h4>
-                                    <p className="mt-2 text-sm text-gray-600">{product.description}</p>
-                                </div>
-                                <div className="mt-6 flex-1 flex items-end">
-                                    <dl className="flex text-sm divide-x divide-gray-200 space-x-4 sm:space-x-6">
-                                        <div className="flex">
-                                            <dt className="font-medium text-indigo-600">Quantity</dt>
-                                            <dd className="ml-2 text-gray-700">{product.quantity}</dd>
-                                        </div>
-                                        <div className="pl-4 flex sm:pl-6">
-                                            <dt className="font-medium text-indigo-600">Price</dt>
-                                            <dd className="ml-2 text-gray-700">{product.price}</dd>
-                                        </div>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
+                        <OrderProductCard key={product.id} product={product} />
                     ))}
 
                     <div className="sm:ml-40 sm:pl-6">
