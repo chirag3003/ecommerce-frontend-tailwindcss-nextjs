@@ -1,4 +1,5 @@
 import React from 'react'
+import AuthProtect from "components/AuthProtect";
 import ShoppingCartPage from "components/ShoppingCart"
 import BasicLayout from "components/layouts/Basic"
 import Head from 'next/head'
@@ -6,19 +7,21 @@ import Head from 'next/head'
 
 function Cart() {
     return (
-        <div>
-            <Head>
-                <title>Cart</title>
-                <meta name="description" content="Cart" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+        <AuthProtect>
+            <div>
+                <Head>
+                    <title>Cart</title>
+                    <meta name="description" content="Cart" />
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
 
-            <BasicLayout>
-                <ShoppingCartPage />
-            </BasicLayout>
+                <BasicLayout>
+                    <ShoppingCartPage />
+                </BasicLayout>
 
 
-        </div>
+            </div>
+        </AuthProtect>
     )
 }
 

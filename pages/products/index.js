@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import BasicLayout from "components/layouts/Basic"
 import ProductsPage from "components/Products"
+import Axios from "helpers/Axios";
 
 
-export default function Home() {
+export default function Products(props) {
     return (
         <div>
             <Head>
@@ -13,10 +14,19 @@ export default function Home() {
             </Head>
 
             <BasicLayout>
-                <ProductsPage />
+                <ProductsPage products={props.products} />
             </BasicLayout>
 
 
         </div>
     )
+}
+
+export async function getStaticProps(context) {
+    const {data} = await Axios.get("/products").catch((err) => {
+        return {data:[]}
+    })
+    return {
+        props: {products:data}, // will be passed to the page component as props
+    }
 }

@@ -1,50 +1,29 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
+import {Fragment, useContext, useState} from 'react'
+import {Dialog, Menu, Popover, Tab, Transition} from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingCartIcon, UserIcon, XIcon } from '@heroicons/react/outline'
 import { LOGO } from 'config/url'
 import Link from 'next/link'
+import {userNavigation, navigation, loggedOutNavigation} from "config/navbar"
+import Auth from "helpers/Auth";
+import Cart from "helpers/Cart";
 
-const navigation = {
-    categories: [
-        {
-            name: 'Categories',
-            featured: [
-                { name: 'Sleep', href: '#' },
-                { name: 'Swimwear', href: '#' },
-                { name: 'Underwear', href: '#' },
-            ],
-            collection: [
-                { name: 'Everything', href: '#' },
-                { name: 'Core', href: '#' },
-                { name: 'New Arrivals', href: '#' },
-                { name: 'Sale', href: '#' },
-            ],
-            categories: [
-                { name: 'Basic Tees', href: '#' },
-                { name: 'Artwork Tees', href: '#' },
-                { name: 'Bottoms', href: '#' },
-                { name: 'Underwear', href: '#' },
-                { name: 'Accessories', href: '#' },
-            ],
-            brands: [
-                { name: 'Full Nelson', href: '#' },
-                { name: 'My Way', href: '#' },
-                { name: 'Re-Arranged', href: '#' },
-                { name: 'Counterfeit', href: '#' },
-                { name: 'Significant Other', href: '#' },
-            ],
-        },
-    ],
-    pages: [
-    ],
-}
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function Navbar() {
+    const cart = useContext(Cart)
+    const auth = useContext(Auth)
     const [open, setOpen] = useState(false)
+
+    function navButton(onClick){
+        return () => {
+            if (onClick) {
+                onClick(auth)
+            }
+        }
+    }
 
     return (
         <div className="bg-white z-30">
@@ -177,18 +156,17 @@ export default function Navbar() {
                                     ))}
                                 </Tab.Panels>
                             </Tab.Group>
-
                             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                                 {navigation.pages.map((page) => (
                                     <div key={page.name} className="flow-root">
-                                        <a href={page.href} className="-m-2 p-2 block font-medium text-gray-900">
-                                            {page.name}
-                                        </a>
+                                        <Link href={page.href} passHref>
+                                            <div className="-m-2 p-2 block font-medium text-gray-900">
+                                                {page.name}
+                                            </div>
+                                        </Link>
                                     </div>
                                 ))}
                             </div>
-
-
                         </div>
                     </Transition.Child>
                 </Dialog>
@@ -396,24 +374,63 @@ export default function Navbar() {
                                                 </div>
 
                                                 <div className="flex">
-                                                    <a href="#" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
+                                                    <div className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                                         <span className="sr-only">Account</span>
-                                                        <UserIcon className="w-6 h-6" aria-hidden="true" />
-                                                    </a>
+
+                                                        <Menu as="div" className="ml-3 relative">
+                                                            <div>
+                                                                <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                                    <UserIcon className="w-6 h-6" aria-hidden="true" />
+                                                                </Menu.Button>
+                                                            </div>
+                                                            <Transition
+                                                                as={Fragment}
+                                                                enter="transition ease-out duration-200"
+                                                                enterFrom="transform opacity-0 scale-95"
+                                                                enterTo="transform opacity-100 scale-100"
+                                                                leave="transition ease-in duration-75"
+                                                                leaveFrom="transform opacity-100 scale-100"
+                                                                leaveTo="transform opacity-0 scale-95"
+                                                            >
+                                                                <Menu.Items className="origin-top-right z-20 absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                                    {(auth.user ? userNavigation: loggedOutNavigation).map((item) => (
+                                                                        <Menu.Item key={item.name}>
+                                                                            {({ active }) => (
+                                                                                <Link
+                                                                                    href={item.href}
+                                                                                    passHref
+                                                                                >
+                                                                                    <button onClick={navButton(item.onClick)} className={classNames(
+                                                                                        active ? 'bg-gray-100' : '',
+                                                                                        'w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                                                                                    )}>
+                                                                                        {item.name}
+                                                                                    </button>
+                                                                                </Link>
+                                                                            )}
+                                                                        </Menu.Item>
+                                                                    ))}
+                                                                </Menu.Items>
+                                                            </Transition>
+                                                        </Menu>
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             <span className="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true" />
 
                                             <div className="flow-root">
-                                                <a href="#" className="group -m-2 p-2 flex items-center">
-                                                    <ShoppingCartIcon
-                                                        className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                                        aria-hidden="true"
-                                                    />
-                                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                                                    <span className="sr-only">items in cart, view bag</span>
-                                                </a>
+                                                <Link href="/account/cart"  passHref>
+                                                    <div className="group -m-2 p-2 flex items-center">
+                                                        <ShoppingCartIcon
+                                                            className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                                                            aria-hidden="true"
+                                                        />
+                                                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cart.cartItems.length}</span>
+                                                        <span className="sr-only">items in cart, view bag</span>
+
+                                                    </div>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>

@@ -1,6 +1,9 @@
-import { QuestionMarkCircleIcon } from '@heroicons/react/solid'
+import {QuestionMarkCircleIcon} from '@heroicons/react/solid'
 import ProductCard2 from 'components/ProductCard2'
 import CartProductCart from './CartProductCard'
+import {useContext, useEffect, useState} from "react";
+import Cart from "helpers/Cart";
+import Axios from "helpers/Axios";
 
 const products = [
     {
@@ -59,7 +62,21 @@ const relatedProducts = [
     // More products...
 ]
 
-export default function Example() {
+export default function ShoppingCart() {
+    const cart = useContext(Cart)
+    const [cartProducts, setCartProducts] = useState([])
+    console.log(cartProducts)
+
+    useEffect(() => {
+        Axios.post("/products/cartData", cart.cartItems).then(res => {
+            console.log(res)
+            if(!res.data){
+                return setCartProducts([])
+            }
+            setCartProducts(res.data)
+        }).catch(err => console.error(err))
+    }, [cart.cartItems])
+
     return (
         <div className="bg-white">
             <main className="max-w-2xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -72,8 +89,8 @@ export default function Example() {
                         </h2>
 
                         <ul role="list" className="border-t border-b border-gray-200 divide-y divide-gray-200">
-                            {products.map((product, productIdx) => (
-                                <CartProductCart key={product.id} product={product} productIdx={productIdx} />
+                            {cartProducts.map(({product,size,stock,quantity}, productIdx) => (
+                                <CartProductCart key={product.id} product={product} size={size} quantity={quantity} stock={stock} remove={cart.removeItem} setQuantity={cart.setCartItemQuantity} productIdx={productIdx}/>
                             ))}
                         </ul>
                     </section>
@@ -97,7 +114,7 @@ export default function Example() {
                                     <span>Shipping estimate</span>
                                     <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                                         <span className="sr-only">Learn more about how shipping is calculated</span>
-                                        <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+                                        <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true"/>
                                     </a>
                                 </dt>
                                 <dd className="text-sm font-medium text-gray-900">$5.00</dd>
@@ -107,7 +124,7 @@ export default function Example() {
                                     <span>Tax estimate</span>
                                     <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                                         <span className="sr-only">Learn more about how tax is calculated</span>
-                                        <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+                                        <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true"/>
                                     </a>
                                 </dt>
                                 <dd className="text-sm font-medium text-gray-900">$8.32</dd>
@@ -130,17 +147,17 @@ export default function Example() {
                 </form>
 
                 {/* Related products */}
-                <section aria-labelledby="related-heading" className="mt-24">
-                    <h2 id="related-heading" className="text-lg font-medium text-gray-900">
-                        You may also like&hellip;
-                    </h2>
+                {/*<section aria-labelledby="related-heading" className="mt-24">*/}
+                {/*    <h2 id="related-heading" className="text-lg font-medium text-gray-900">*/}
+                {/*        You may also like&hellip;*/}
+                {/*    </h2>*/}
 
-                    <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                        {relatedProducts.map((product) => (
-                            <ProductCard2 key={product.id} product={product} />
-                        ))}
-                    </div>
-                </section>
+                {/*    <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">*/}
+                {/*        {relatedProducts.map((product) => (*/}
+                {/*            <ProductCard2 key={product.id} product={product} />*/}
+                {/*        ))}*/}
+                {/*    </div>*/}
+                {/*</section>*/}
             </main>
         </div>
     )
