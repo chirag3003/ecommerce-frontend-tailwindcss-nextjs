@@ -14,7 +14,6 @@ const getLocalJWT = () => {
             return jwt;
         }
     } catch (err) {
-        console.error(err);
         return null;
     }
 };
