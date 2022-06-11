@@ -7,6 +7,7 @@ const authContext = createContext({
     login: async ({ email = "", password = "" }) => {},
     register:async ({email="", password=""}) => {},
     logout: () => {},
+    getUserData:() => {},
     Axios: Axios,
 });
 

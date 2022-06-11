@@ -59,16 +59,7 @@ function AuthContext({children}) {
         setJwt(null);
     }
 
-    useEffect(() => {
-        if (!jwt || jwt === "" || jwt === null) {
-            setUser(null);
-            setLocalJwt(null);
-            return;
-        }
-        if (jwt !== getLocalJWT()) {
-            setLocalJwt(jwt);
-        }
-
+     function getUserData(){
         Axios({
             method: "GET",
             url: "/user/me",
@@ -83,6 +74,19 @@ function AuthContext({children}) {
                 setUser(null);
                 setJwt(null);
             });
+    }
+
+    useEffect(() => {
+        if (!jwt || jwt === "" || jwt === null) {
+            setUser(null);
+            setLocalJwt(null);
+            return;
+        }
+        if (jwt !== getLocalJWT()) {
+            setLocalJwt(jwt);
+        }
+        getUserData()
+
     }, [jwt]);
 
     return (
@@ -93,6 +97,7 @@ function AuthContext({children}) {
                 login,
                 logout,
                 register,
+                getUserData,
                 Axios: axios.create({
                     baseURL: process.env.NEXT_PUBLIC_API_URL,
                     headers: {
