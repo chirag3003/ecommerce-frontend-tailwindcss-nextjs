@@ -1,24 +1,33 @@
 import AddressCard from "./AddressCard";
 import AddressInput from "./AddressInput";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Auth from "helpers/Auth";
 import toast from "react-hot-toast";
 
+const addressInputDefault = {
+    name: "", phoneNo: "", addressLine1: "", addressLine2: "", landmark: "", city: "", state: "", zipcode: "",
+}
 export default function AccountPage() {
     const auth = useContext(Auth)
-    const [input,setInput] = useState({
-        name:""
+    const [input, setInput] = useState({
+        name: ""
     })
-    function onInputChange(evt) {
-        const {name,value} = evt.target
-        setInput(old => {
-            return {
-                ...old,
-                [name]:value
-            }
-        })
+    const [addresses,setAddresses] = useState([])
+    const [newAddressInput, setNewAddressInput] = useState(addressInputDefault)
+    const [addAddressOpen, setAddAddressOpen] = useState(false)
+
+    function onInputChange(setState) {
+        return (evt) => {
+            const {name, value} = evt.target
+            setState(old => {
+                return {
+                    ...old, [name]: value
+                }
+            })
+        }
     }
-    async function saveInput(){
+
+    async function saveInput() {
         auth.Axios.patch("/user/name", input).then(res => {
             toast.success("Successfully Saved!")
             auth.getUserData()
@@ -26,59 +35,107 @@ export default function AccountPage() {
             toast.error("Error Saving Data!")
         })
     }
+
+    function onAddressSave(data) {
+        auth.Axios.post("/user/address", data).then(res => {
+            toast.success("Address saved successfully")
+            setAddAddressOpen(false)
+            setNewAddressInput(addressInputDefault)
+            setAddresses([...addresses,{_id:res.data.InsertedID,...data}])
+        }).catch(err => {
+            toast.error("Error Saving Address")
+        })
+    }
+    function onEditAddress(index){
+        return data => {
+            let newAddresses = [...addresses]
+            newAddresses[index] = data;
+            setAddresses(newAddresses)
+        }
+    }
+
+    function onDeleteAddress(index){
+        return () => {
+            console.log(index)
+            let newAddresses = addresses.filter((address,i) => {
+                return i !== index
+            })
+            setAddresses(newAddresses)
+        }
+    }
+
     useEffect(() => {
         setInput(auth.user)
-    },[auth.user])
-    return (
-        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+    }, [auth.user])
+    useEffect(() => {
+        auth.Axios.get("/user/address").then(res => {
+            setAddresses(res.data)
+        }).catch(err => {
+            console.error(err)
+            toast.error("An error occurred while fetching your data")
+        })
+    },[])
+    return (<main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 mb-36">
+        <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
 
-                    <div className="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
-                        <div>
-                            <h3 className="text-lg leading-6 font-medium text-gray-900">Personal Information</h3>
-                            <p className="mt-1 max-w-2xl text-sm text-gray-500">Use a permanent address where you can
-                                receive mail.</p>
+            <div className="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
+                <div>
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">Personal Information</h3>
+                    <p className="mt-1 max-w-2xl text-sm text-gray-500">Use a permanent address where you can
+                        receive mail.</p>
+                </div>
+                <div className="space-y-6 sm:space-y-5">
+                    <div
+                        className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                        <label htmlFor="name"
+                               className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            Full Name
+                        </label>
+                        <div className="mt-1 sm:mt-0 sm:col-span-2">
+                            <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                value={input.name}
+                                onChange={onInputChange(setInput)}
+                                className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
+                            />
                         </div>
-                        <div className="space-y-6 sm:space-y-5">
-                            <div
-                                className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                                <label htmlFor="name"
-                                       className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                    Full Name
-                                </label>
-                                <div className="mt-1 sm:mt-0 sm:col-span-2">
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        id="name"
-                                        value={input.name}
-                                        onChange={onInputChange}
-                                        className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
-                                    />
-                                </div>
-                            </div>
-                            <div className="pt-5">
-                                <div className="flex justify-end">
-                                    <button
-                                        onClick={saveInput}
-                                        className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 className="mt-2 text-lg leading-6 font-medium text-gray-900">Addresses</h3>
-                            </div>
-
-                            <AddressCard name={"hello"} phoneNo={9003003002} addressLine1={"Street 45, ABC Complex, Block B , Flat 3c"} addressLine2={"Somehting line"} city={"Kolkata"} landmark={"yes"} zipcode={"50000"}/>
-                            <AddressInput/>
+                    </div>
+                    <div className="pt-5">
+                        <div className="flex justify-end">
+                            <button
+                                onClick={saveInput}
+                                className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Save
+                            </button>
                         </div>
                     </div>
 
+                    <div>
+                        <h3 className="mt-2 text-lg leading-6 font-medium text-gray-900">Addresses</h3>
+                    </div>
+                    {!addAddressOpen && <>
+                        {addresses.map((address,index)=>{
+                            return <AddressCard key={address._id} {...address} onEdit={onEditAddress(index)} onDelete={onDeleteAddress(index)} />
+                        }) }
+                        <div className="actions  my-3">
+                            <button onClick={() => setAddAddressOpen(true)}>Add Address</button>
+                        </div>
+                    </>}
+                    {addAddressOpen &&
+                        <AddressInput
+                            input={newAddressInput}
+                            setInput={onInputChange(setNewAddressInput)}
+                            onCancel={() => setAddAddressOpen(false)}
+                            onSave={onAddressSave}
+                        />
+                    }
                 </div>
+            </div>
 
-        </main>
-    )
+        </div>
+
+    </main>)
 }

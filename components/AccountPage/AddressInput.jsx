@@ -1,6 +1,12 @@
 import React from 'react';
 
-function AddressInput(props) {
+function AddressInput({input, setInput,onCancel,onSave}) {
+    function saveAddress(){
+        onSave({
+            ...input,
+            phoneNo: Number(input.phoneNo)
+        })
+    }
     return (
         <div>
 
@@ -14,8 +20,9 @@ function AddressInput(props) {
                     <input
                         type="text"
                         name="name"
+                        value={input.name}
+                        onChange={setInput}
                         id="name"
-                        autoComplete="street-address"
                         className="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
                     />
                 </div>
@@ -33,8 +40,9 @@ function AddressInput(props) {
                         id="phoneNoContact"
                         name="phoneNo"
                         type="number"
-                        autoComplete="email"
-                        className="block max-w-lg lg:max-w-sm w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
+                        value={input.phoneNo}
+                        onChange={setInput}
+                        className="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
                     />
                 </div>
             </div>
@@ -49,7 +57,8 @@ function AddressInput(props) {
                         type="text"
                         name="addressLine1"
                         id="addressLine1"
-                        autoComplete="street-address"
+                        value={input.addressLine1}
+                        onChange={setInput}
                         className="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
                     />
                 </div>
@@ -65,7 +74,25 @@ function AddressInput(props) {
                         type="text"
                         name="addressLine2"
                         id="addressLine2"
-                        autoComplete="street-address"
+                        value={input.addressLine2}
+                        onChange={setInput}
+                        className="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
+                    />
+                </div>
+            </div>
+            <div
+                className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                <label htmlFor="landmark"
+                       className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                    Landmark
+                </label>
+                <div className="my-1 sm:mt-0 sm:col-span-2">
+                    <input
+                        type="text"
+                        name="landmark"
+                        id="landmark"
+                        value={input.landmark}
+                        onChange={setInput}
                         className="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
                     />
                 </div>
@@ -82,7 +109,8 @@ function AddressInput(props) {
                         type="text"
                         name="city"
                         id="city"
-                        autoComplete="address-level2"
+                        value={input.city}
+                        onChange={setInput}
                         className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                     />
                 </div>
@@ -90,16 +118,17 @@ function AddressInput(props) {
 
             <div
                 className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                <label htmlFor="region"
+                <label htmlFor="state"
                        className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                     State / Province
                 </label>
                 <div className="my-1 sm:mt-0 sm:col-span-2">
                     <input
                         type="text"
-                        name="region"
-                        id="region"
-                        autoComplete="address-level1"
+                        name="state"
+                        id="state"
+                        value={input.state}
+                        onChange={setInput}
                         className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                     />
                 </div>
@@ -114,12 +143,18 @@ function AddressInput(props) {
                 <div className="my-1 sm:mt-0 sm:col-span-2">
                     <input
                         type="text"
-                        name="postal-code"
+                        name="zipcode"
                         id="postal-code"
+                        value={input.zipcode}
+                        onChange={setInput}
                         autoComplete="postal-code"
                         className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                     />
                 </div>
+            </div>
+            <div className="actions w-full p-2 flex justify-end">
+                <button className={"border border-red-600 p-2 rounded-lg text-red-600 mr-4"} onClick={onCancel}>Cancel</button>
+                <button className={"p-2 rounded-lg bg-indigo-600 text-white px-4"} onClick={saveAddress}>Save</button>
             </div>
         </div>
     );
