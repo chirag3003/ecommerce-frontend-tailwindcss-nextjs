@@ -3,6 +3,7 @@ import CheckoutProductCard from "./CheckoutProductCard";
 import {useContext, useEffect, useState} from "react";
 import Cart from "../../helpers/Cart";
 import Axios from "../../helpers/Axios";
+import Addresses from "../Addresses";
 
 const products = [
     {
@@ -30,19 +31,27 @@ export default function CheckoutPage() {
 
     const cart = useContext(Cart)
     const [cartProducts, setCartProducts] = useState([])
-    console.log("d",cartProducts)
+    const [cartAmount,setCartAmount] = useState(0)
+
     function checkout(){}
 
 
     useEffect(() => {
         Axios.post("/products/cartData", cart.cartItems).then(res => {
-            console.log(res)
             if(!res.data){
                 return setCartProducts([])
             }
             setCartProducts(res.data)
         }).catch(err => console.error(err))
     }, [cart.cartItems])
+
+    useEffect(() => {
+        let amount = 0 ;
+        cartProducts.forEach((product) => {
+            amount += (product.product.price * product.quantity)
+        })
+        setCartAmount(amount)
+    } , [cartProducts])
 
     return (
         <div className="bg-gray-50">
@@ -51,12 +60,11 @@ export default function CheckoutPage() {
                 <div className="max-w-2xl mx-auto lg:max-w-none">
                     <h1 className="sr-only">Checkout</h1>
 
-                    <form className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+                    <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                         <div>
                             <div className="border-gray-200">
-                                <h2 className="text-lg font-medium text-gray-900">Shipping information</h2>
-
-                                <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
+                                <Addresses title={"Shipping Information"}/>
+                                {/*<div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
                                     <div>
                                         <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
                                             First name
@@ -208,7 +216,7 @@ export default function CheckoutPage() {
                                             />
                                         </div>
                                     </div>
-                                </div>
+                                </div>*/}
                             </div>
                         </div>
 
@@ -220,25 +228,17 @@ export default function CheckoutPage() {
                                 <h3 className="sr-only">Items in your cart</h3>
                                 <ul role="list" className="divide-y divide-gray-200">
                                     {cartProducts.map(({product,size,quantity}, index) => (
-                                        <CheckoutProductCard key={product._id} product={product} size={size} quantity={quantity} remove={cart.removeItem} setQuantity={cart.setCartItemQuantity} index={index} />
+                                        <CheckoutProductCard key={index} product={product} size={size} quantity={quantity} remove={cart.removeItem} setQuantity={cart.setCartItemQuantity} index={index} />
                                     ))}
                                 </ul>
                                 <dl className="border-t border-gray-200 py-6 px-4 space-y-6 sm:px-6">
                                     <div className="flex items-center justify-between">
                                         <dt className="text-sm">Subtotal</dt>
-                                        <dd className="text-sm font-medium text-gray-900">$64.00</dd>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <dt className="text-sm">Shipping</dt>
-                                        <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <dt className="text-sm">Taxes</dt>
-                                        <dd className="text-sm font-medium text-gray-900">$5.52</dd>
+                                        <dd className="text-sm font-medium text-gray-900">₹ {cartAmount}</dd>
                                     </div>
                                     <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                                         <dt className="text-base font-medium">Total</dt>
-                                        <dd className="text-base font-medium text-gray-900">$75.52</dd>
+                                        <dd className="text-base font-medium text-gray-900">₹ {cartAmount}</dd>
                                     </div>
                                 </dl>
 
@@ -252,7 +252,7 @@ export default function CheckoutPage() {
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </main>
         </div>

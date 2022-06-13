@@ -1,21 +1,13 @@
-import AddressCard from "./AddressCard";
-import AddressInput from "./AddressInput";
 import React, {useContext, useEffect, useState} from "react";
 import Auth from "helpers/Auth";
 import toast from "react-hot-toast";
+import Addresses from "../Addresses";
 
-const addressInputDefault = {
-    name: "", phoneNo: "", addressLine1: "", addressLine2: "", landmark: "", city: "", state: "", zipcode: "",
-}
 export default function AccountPage() {
     const auth = useContext(Auth)
     const [input, setInput] = useState({
         name: ""
     })
-    const [addresses,setAddresses] = useState([])
-    const [newAddressInput, setNewAddressInput] = useState(addressInputDefault)
-    const [addAddressOpen, setAddAddressOpen] = useState(false)
-
     function onInputChange(setState) {
         return (evt) => {
             const {name, value} = evt.target
@@ -36,45 +28,12 @@ export default function AccountPage() {
         })
     }
 
-    function onAddressSave(data) {
-        auth.Axios.post("/user/address", data).then(res => {
-            toast.success("Address saved successfully")
-            setAddAddressOpen(false)
-            setNewAddressInput(addressInputDefault)
-            setAddresses([...addresses,{_id:res.data.InsertedID,...data}])
-        }).catch(err => {
-            toast.error("Error Saving Address")
-        })
-    }
-    function onEditAddress(index){
-        return data => {
-            let newAddresses = [...addresses]
-            newAddresses[index] = data;
-            setAddresses(newAddresses)
-        }
-    }
 
-    function onDeleteAddress(index){
-        return () => {
-            console.log(index)
-            let newAddresses = addresses.filter((address,i) => {
-                return i !== index
-            })
-            setAddresses(newAddresses)
-        }
-    }
 
     useEffect(() => {
         setInput(auth.user)
     }, [auth.user])
-    useEffect(() => {
-        auth.Axios.get("/user/address").then(res => {
-            setAddresses(res.data)
-        }).catch(err => {
-            console.error(err)
-            toast.error("An error occurred while fetching your data")
-        })
-    },[])
+
     return (<main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 mb-36">
         <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
 
@@ -96,7 +55,7 @@ export default function AccountPage() {
                                 type="text"
                                 name="name"
                                 id="name"
-                                value={input.name}
+                                value={input?.name}
                                 onChange={onInputChange(setInput)}
                                 className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                             />
@@ -113,25 +72,7 @@ export default function AccountPage() {
                         </div>
                     </div>
 
-                    <div>
-                        <h3 className="mt-2 text-lg leading-6 font-medium text-gray-900">Addresses</h3>
-                    </div>
-                    {!addAddressOpen && <>
-                        {addresses.map((address,index)=>{
-                            return <AddressCard key={address._id} {...address} onEdit={onEditAddress(index)} onDelete={onDeleteAddress(index)} />
-                        }) }
-                        <div className="actions  my-3">
-                            <button onClick={() => setAddAddressOpen(true)}>Add Address</button>
-                        </div>
-                    </>}
-                    {addAddressOpen &&
-                        <AddressInput
-                            input={newAddressInput}
-                            setInput={onInputChange(setNewAddressInput)}
-                            onCancel={() => setAddAddressOpen(false)}
-                            onSave={onAddressSave}
-                        />
-                    }
+                    <Addresses/>
                 </div>
             </div>
 

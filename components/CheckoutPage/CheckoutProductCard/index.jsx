@@ -10,8 +10,8 @@ function CheckoutProductCard({product,index,size,setQuantity,remove,quantity}) {
     }
     return (
         <li  className="flex py-6 px-4 sm:px-6">
-            <div className="flex-shrink-0">
-                <img src={product.images[0]} alt={""} className="w-20 rounded-md" />
+            <div className="">
+                <img src={product.images[0]} alt={""} className="w-24 rounded-md" />
             </div>
 
             <div className="ml-6 flex-1 flex flex-col">
@@ -39,7 +39,7 @@ function CheckoutProductCard({product,index,size,setQuantity,remove,quantity}) {
                 </div>
 
                 <div className="flex-1 pt-2 flex items-end justify-between">
-                    <p className="mt-1 text-sm font-medium text-gray-900">{product.price}</p>
+                    <p className="mt-1 text-sm font-medium text-gray-900">₹ {product.price}</p>
 
                     <div className="ml-4">
                         <label htmlFor={`quantity-${index}`} className="sr-only">
