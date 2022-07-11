@@ -6,12 +6,11 @@ import toast from "react-hot-toast";
 const addressInputDefault = {
     name: "", phoneNo: "", addressLine1: "", addressLine2: "", landmark: "", city: "", state: "", zipcode: "",
 }
-function Index({title="Addresses"}) {
+function Index({title="Addresses",select=false,selectedAddress,setSelectedAddress}) {
     const auth = useContext(Auth)
     const [addresses,setAddresses] = useState([])
     const [newAddressInput, setNewAddressInput] = useState(addressInputDefault)
     const [addAddressOpen, setAddAddressOpen] = useState(false)
-
     function onInputChange(setState) {
         return (evt) => {
             const {name, value} = evt.target
@@ -58,7 +57,13 @@ function Index({title="Addresses"}) {
             console.error(err)
             toast.error("An error occurred while fetching your data")
         })
-    },[])
+    },[select])
+    useEffect(() => {
+        if(select && addresses.length !== 0){
+            setSelectedAddress(addresses[0]._id)
+        }
+    },[addresses,select,setSelectedAddress])
+
     return (
         <div>
             <div>
@@ -66,7 +71,14 @@ function Index({title="Addresses"}) {
             </div>
             {!addAddressOpen && <>
                 {addresses.map((address,index)=>{
-                    return <AddressCard key={address._id} {...address} onEdit={onEditAddress(index)} onDelete={onDeleteAddress(index)} />
+                    return <AddressCard
+                        key={address._id} {...address}
+                        onEdit={onEditAddress(index)}
+                        onDelete={onDeleteAddress(index)}
+                        select={select}
+                        selected={address._id === selectedAddress}
+                        onSelect={() => {setSelectedAddress(address._id)}}
+                    />
                 }) }
                 <div className="actions  my-3">
                     <button onClick={() => setAddAddressOpen(true)}>Add Address</button>

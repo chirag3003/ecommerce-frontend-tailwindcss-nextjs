@@ -79,6 +79,11 @@ function CartContext({children}) {
         return null
     }
 
+    const setCart = (items) => {
+        setCartItems(items)
+        setLocalCartItems(items)
+    }
+
     useEffect(() => {
         try {
             let items = JSON.parse(localStorage.getItem("cartItems"))
@@ -92,7 +97,7 @@ function CartContext({children}) {
     return (
         <context.Provider
             value={{
-                cartItems, setCartItemQuantity, addCartItem, reduceItem, removeItem, getCartItem
+                cartItems, setCartItemQuantity, addCartItem, reduceItem, removeItem, getCartItem,setCart
             }}
         >
             {children}

@@ -13,10 +13,24 @@ export default function ShoppingCart() {
 
     useEffect(() => {
         Axios.post("/products/cartData", cart.cartItems).then(res => {
-            console.log(res)
+
+            if(res.data == null) res.data = []
+            if(cart.cartItems == null ) res.data = []
+            if( res.data.length !== cart.cartItems.length) {
+                if(res.data)
+                cart.setCart(res.data.map(data => {
+                    return {
+                        id: data.product._id,
+                        size: data.size,
+                        quantity: data.quantity
+                    }
+                }))
+                else cart.setCart([])
+            }
             if(!res.data){
                 return setCartProducts([])
             }
+
             setCartProducts(res.data)
         }).catch(err => console.error(err))
     }, [cart.cartItems])
@@ -58,9 +72,9 @@ export default function ShoppingCart() {
                         <dl className="mt-6 space-y-4">
                             <div className="flex items-center justify-between">
                                 <dt className="text-sm text-gray-600">Subtotal</dt>
-                                <dd className="text-sm font-medium text-gray-900">$99.00</dd>
+                                <dd className="text-sm font-medium text-gray-900">₹ {cartAmount}</dd>
                             </div>
-                            <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                            {/*<div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                                 <dt className="flex items-center text-sm text-gray-600">
                                     <span>Shipping estimate</span>
                                     <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
@@ -69,20 +83,10 @@ export default function ShoppingCart() {
                                     </a>
                                 </dt>
                                 <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-                            </div>
-                            <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                                <dt className="flex text-sm text-gray-600">
-                                    <span>Tax estimate</span>
-                                    <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                                        <span className="sr-only">Learn more about how tax is calculated</span>
-                                        <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true"/>
-                                    </a>
-                                </dt>
-                                <dd className="text-sm font-medium text-gray-900">$8.32</dd>
-                            </div>
+                            </div>*/}
                             <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                                 <dt className="text-base font-medium text-gray-900">Order total</dt>
-                                <dd className="text-base font-medium text-gray-900">$112.32</dd>
+                                <dd className="text-base font-medium text-gray-900">₹ {cartAmount}</dd>
                             </div>
                         </dl>
 

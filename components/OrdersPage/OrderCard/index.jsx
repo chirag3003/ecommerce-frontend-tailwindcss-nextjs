@@ -15,24 +15,24 @@ function OrderCard({ order }) {
             className="bg-white border-t border-b border-gray-200 shadow-sm sm:rounded-lg sm:border"
         >
             <h3 className="sr-only">
-                Order placed on <time dateTime={order.createdDatetime}>{order.createdDate}</time>
+                Order placed on <time dateTime={order.createdAt} />
             </h3>
 
             <div className="flex items-center p-4 border-b border-gray-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
                 <dl className="flex-1 grid grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2">
                     <div>
                         <dt className="font-medium text-gray-900">Order number</dt>
-                        <dd className="mt-1 text-gray-500">{order.number}</dd>
+                        <dd className="mt-1 text-gray-500">{order.orderID}</dd>
                     </div>
                     <div className="hidden sm:block">
                         <dt className="font-medium text-gray-900">Date placed</dt>
                         <dd className="mt-1 text-gray-500">
-                            <time dateTime={order.createdDatetime}>{order.createdDate}</time>
+                            <time dateTime={order.createdAt}>{order.createdDate}</time>
                         </dd>
                     </div>
                     <div>
                         <dt className="font-medium text-gray-900">Total amount</dt>
-                        <dd className="mt-1 font-medium text-gray-900">{order.total}</dd>
+                        <dd className="mt-1 font-medium text-gray-900">₹ {order.amount}</dd>
                     </div>
                 </dl>
 
@@ -58,7 +58,7 @@ function OrderCard({ order }) {
                                 <Menu.Item>
                                     {({ active }) => (
                                         <a
-                                            href={order.href}
+                                            href={"/order/"+order.orderID}
                                             className={classNames(
                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                 'block px-4 py-2 text-sm'
@@ -88,7 +88,7 @@ function OrderCard({ order }) {
 
                 <div className="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                     <a
-                        href={order.href}
+                        href={"/account/orders/"+order.orderID}
                         className="flex items-center justify-center bg-white py-2 px-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         <span>View Order</span>

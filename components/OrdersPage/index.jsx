@@ -1,6 +1,8 @@
 import OrderCard from './OrderCard'
+import {useContext, useEffect, useState} from "react";
+import Auth from "../../helpers/Auth";
 
-const orders = [
+const ordersData = [
     {
         number: 'WU88191111',
         href: '#',
@@ -62,6 +64,15 @@ const orders = [
 
 
 export default function OrdersPage() {
+    const auth = useContext(Auth)
+    const [orders,setOrders] = useState([])
+    useEffect(() => {
+        auth.Axios.get("/order").then(res => {
+            console.log(res.data)
+            setOrders(res.data)
+        }).catch(err => {console.error(err)})
+
+    },[])
     return (
         <div className="bg-gray-50">
             <main className="py-24">

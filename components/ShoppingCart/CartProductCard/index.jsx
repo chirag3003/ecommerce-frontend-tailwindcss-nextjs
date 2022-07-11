@@ -11,6 +11,7 @@ function CartProductCart({ product,size,stock,quantity,remove,setQuantity, produ
         remove(product._id,size)
     }
 
+
     return (
         <li key={product.id} className="flex py-6 sm:py-10">
             <div className="flex-shrink-0">
@@ -77,7 +78,7 @@ function CartProductCart({ product,size,stock,quantity,remove,setQuantity, produ
                         <ClockIcon className="flex-shrink-0 h-5 w-5 text-gray-300" aria-hidden="true" />
                     )}
 
-                    <span>{product.inStock ? 'In stock' : `Ships in few days`}</span>
+                    <span>{stock>quantity ? 'In stock' : `Ships in few days`}</span>
                 </p>
             </div>
         </li>
