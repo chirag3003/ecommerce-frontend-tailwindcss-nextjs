@@ -535,10 +535,7 @@ export default function Navbar() {
                                                                         <Menu.Item key={item.name}>
                                                                             {({ active }) => (
                                                                                 <Link
-                                                                                    href={
-                                                                                        "/products"
-                                                                                    }
-                                                                                    passHref
+                                                                                    href={item.href}
                                                                                 >
                                                                                     <button
                                                                                         onClick={navButton(

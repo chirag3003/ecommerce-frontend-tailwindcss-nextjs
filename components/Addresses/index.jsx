@@ -65,34 +65,48 @@ function Index({title="Addresses",select=false,selectedAddress,setSelectedAddres
     },[addresses,select,setSelectedAddress])
 
     return (
+      <div>
         <div>
-            <div>
-                <h3 className="mt-2 mb-4 text-lg leading-6 font-medium text-gray-900">{title}</h3>
-            </div>
-            {!addAddressOpen && <>
-                {addresses.map((address,index)=>{
-                    return <AddressCard
-                        key={address._id} {...address}
-                        onEdit={onEditAddress(index)}
-                        onDelete={onDeleteAddress(index)}
-                        select={select}
-                        selected={address._id === selectedAddress}
-                        onSelect={() => {setSelectedAddress(address._id)}}
-                    />
-                }) }
-                <div className="actions  my-3">
-                    <button onClick={() => setAddAddressOpen(true)}>Add Address</button>
-                </div>
-            </>}
-            {addAddressOpen &&
-                <AddressInput
-                    input={newAddressInput}
-                    setInput={onInputChange(setNewAddressInput)}
-                    onCancel={() => setAddAddressOpen(false)}
-                    onSave={onAddressSave}
-                />
-            }
+          <h3 className="mt-2 mb-4 text-lg leading-6 font-medium text-gray-900">
+            {title}
+          </h3>
         </div>
+        {!addAddressOpen && (
+          <>
+            {addresses.map((address, index) => {
+              return (
+                <AddressCard
+                  key={address._id}
+                  {...address}
+                  onEdit={onEditAddress(index)}
+                  onDelete={onDeleteAddress(index)}
+                  select={select}
+                  selected={address._id === selectedAddress}
+                  onSelect={() => {
+                    setSelectedAddress(address._id);
+                  }}
+                />
+              );
+            })}
+            <div className="actions  my-3">
+              <button
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={() => setAddAddressOpen(true)}
+              >
+                Add Address
+              </button>
+            </div>
+          </>
+        )}
+        {addAddressOpen && (
+          <AddressInput
+            input={newAddressInput}
+            setInput={onInputChange(setNewAddressInput)}
+            onCancel={() => setAddAddressOpen(false)}
+            onSave={onAddressSave}
+          />
+        )}
+      </div>
     );
 }
 
